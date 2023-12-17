@@ -2,8 +2,10 @@
 CC ?= gcc
 CXX ?= g++
 CXXWIN ?= x86_64-w64-mingw32-g++
-CFLAGS := -O3 -Wall -Wextra -Wpedantic -Weffc++
-CXXFLAGS := -O3 -Wall -Wextra -Wpedantic -Weffc++
+CFLAGS := -O3 -Wall -Wextra -Wpedantic -Wconversion \
+		  -Wcast-align -Wunused -Wshadow -Wold-style-cast \
+		  -Wpointer-arith -Wcast-qual -Wno-missing-braces
+CXXFLAGS := -O3 -Wall -Wextra -Wpedantic 
 SFMLFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 DBGFLAGS := -g
 COBJFLAGS := $(CFLAGS) -c
@@ -21,7 +23,6 @@ ifeq ($(OS),Windows_NT)
 endif
 TARGET := $(BIN_PATH)/$(TARGET_NAME)
 TARGET_DEBUG := $(DBG_PATH)/$(TARGET_NAME)
-TARGET_WIN := $(BIN_PATH)/$(addsuffix .exe,$(TARGET_NAME))
 
 # src files & obj files
 SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
@@ -41,9 +42,6 @@ default: makedir all
 # non-phony targets
 $(TARGET): $(OBJ)
 	$(CXX) -o $@ $(OBJ) $(CFLAGS) $(SFMLFLAGS)
-
-$(TARGET_WIN): $(OBJ)
-	$(CXXWIN) -o $@ $(OBJ) $(CFLAGS) $(WINLIB) $(SFMLFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c*
 	$(CXX) $(COBJFLAGS) -o $@ $< 
@@ -66,15 +64,12 @@ all: $(TARGET)
 debug: $(TARGET_DEBUG)
 
 .PHONY: run
-run: ./$(BIN_DIR)/$(TARGET)
-	.$(BIN_DIR)/$(TARGET)
+run: $(TARGET)
+	./$(TARGET)
 
 .PHONY: debug_run
-debug_run: ./$(BIN_DIR)/$(TARGET)
-	valgrind .$(BIN_DIR)/$(TARGET)
-
-.PHONY: win
-win: $(TARGET_WIN)
+debug_run: $(TARGET)
+	valgrind ./$(TARGET)
 
 .PHONY: clean
 clean:

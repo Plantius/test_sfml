@@ -1,39 +1,17 @@
-#include <SFML/Graphics.hpp>
-
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 450
+#include "game.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "GAME -- TEST");
-    sf::CircleShape shape(100);
-    shape.setFillColor(sf::Color::Green);
+    // Creating the game object
+    Game game;    
 
-    while (window.isOpen())
+    // Rendering the window
+    while (game.isWindowOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {   
-            switch (event.type)
-            {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            case sf::Event::KeyPressed:
-                if (event.key.code == sf::Keyboard::Escape){
-                    window.close();
-                }
-                break;
-            
-            default:
-                break;
-            }
-        }
-
-        window.clear(sf::Color::White);
-        window.draw(shape);
-        window.display();
-    }
+        game.handleEvents(); // Handle events
+        game.update(); // Update game
+        game.render(); // Render window
+    }   
 
     return 0;
 }
