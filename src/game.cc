@@ -54,15 +54,27 @@ void Game::update()
 
 void Game::render()
 {  
-    sf::Font font;
-    if (!font.loadFromFile("resources/arial.ttf")){
-        std::cout << "ERROR" << std::endl;
-    }
-    sf::Text fps(std::to_string(static_cast<int>(1/deltaTime.asSeconds())), font, 30);
-    fps.setPosition({10, 10});
-    fps.setFillColor(sf::Color::Black);
-
     window->clear(sf::Color::White);
-    window->draw(fps);
+
+    // Display FPS
+    drawText(std::to_string(static_cast<int>(1/deltaTime.asSeconds())), 
+             sf::Color::Black, 24, {10, 10});
+
+
     window->display();
 } // render
+
+void Game::drawText(const std::string string, 
+                  const sf::Color color, 
+                  const int size, 
+                  const sf::Vector2f position)
+{
+    sf::Font font;
+    if (!font.loadFromFile("resources/fonts/arial.ttf")){
+        std::cerr << "Failed to load font" << std::endl;
+    }
+    sf::Text text(string, font, size);
+    text.setPosition(position);
+    text.setFillColor(color);
+    window->draw(text);
+} // drawText

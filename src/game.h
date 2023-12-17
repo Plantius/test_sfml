@@ -5,6 +5,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
+#include "object.h"
 #include <iostream>
 
 #define WINDOW_WIDTH 1200
@@ -34,6 +35,12 @@ public:
     void update();
     void render();
     void handleEvents();
+
+    // Drawers
+    void drawText(const std::string string, 
+                  const sf::Color color, 
+                  const int size, 
+                  const sf::Vector2f position);
 
     // Getters
     bool isWindowOpen() const {return window->isOpen();};

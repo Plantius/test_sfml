@@ -50,7 +50,7 @@ $(DBG_PATH)/%.o: $(SRC_PATH)/%.c*
 	$(CXX) $(COBJFLAGS) $(DBGFLAGS) -o $@ $<
 
 $(TARGET_DEBUG): $(OBJ_DEBUG)
-	$(CXX) $(CFLAGS) $(DBGFLAGS) $(OBJ_DEBUG) -o $@
+	$(CXX) -o $@ $(CFLAGS) $(DBGFLAGS) $(OBJ_DEBUG) $(SFMLFLAGS)
 
 # phony rules
 .PHONY: makedir
