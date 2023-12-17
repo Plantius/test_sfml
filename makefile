@@ -1,6 +1,7 @@
 # tool macros
 CC ?= gcc
 CXX ?= g++
+CXXWIN ?= x86_64-w64-mingw32-g++
 CFLAGS := -O3 -Wall -Wextra -Wpedantic -Weffc++
 CXXFLAGS := -O3 -Wall -Wextra -Wpedantic -Weffc++
 SFMLFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
@@ -20,6 +21,7 @@ ifeq ($(OS),Windows_NT)
 endif
 TARGET := $(BIN_PATH)/$(TARGET_NAME)
 TARGET_DEBUG := $(DBG_PATH)/$(TARGET_NAME)
+TARGET_WIN := $(BIN_PATH)/$(addsuffix .exe,$(TARGET_NAME))
 
 # src files & obj files
 SRC := $(foreach x, $(SRC_PATH), $(wildcard $(addprefix $(x)/*,.c*)))
@@ -40,8 +42,11 @@ default: makedir all
 $(TARGET): $(OBJ)
 	$(CXX) -o $@ $(OBJ) $(CFLAGS) $(SFMLFLAGS)
 
+$(TARGET_WIN): $(OBJ)
+	$(CXXWIN) -o $@ $(OBJ) $(CFLAGS) $(WINLIB) $(SFMLFLAGS)
+
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c*
-	$(CXX) $(COBJFLAGS) -o $@ $<
+	$(CXX) $(COBJFLAGS) -o $@ $< 
 
 $(DBG_PATH)/%.o: $(SRC_PATH)/%.c*
 	$(CXX) $(COBJFLAGS) $(DBGFLAGS) -o $@ $<
@@ -61,13 +66,15 @@ all: $(TARGET)
 debug: $(TARGET_DEBUG)
 
 .PHONY: run
-run: 
+run: ./$(BIN_DIR)/$(TARGET)
 	.$(BIN_DIR)/$(TARGET)
 
 .PHONY: debug_run
-debug_run: 
+debug_run: ./$(BIN_DIR)/$(TARGET)
 	valgrind .$(BIN_DIR)/$(TARGET)
 
+.PHONY: win
+win: $(TARGET_WIN)
 
 .PHONY: clean
 clean:
