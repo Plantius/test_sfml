@@ -1,4 +1,4 @@
-#include <game.h>
+#include "game.h"
 
 Game::Game()
 {
@@ -51,5 +51,6 @@ void Game::update()
 void Game::render()
 {
     window->clear(sf::Color::White);
+
     window->display();
 } // render
