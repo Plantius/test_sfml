@@ -1,6 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Network.hpp>
 #include <iostream>
 
 #define WINDOW_WIDTH 1200
@@ -15,6 +19,9 @@ private:
 
     sf::Event event;
     std::string windowTitle;
+
+    sf::Clock clock;
+    sf::Time deltaTime;
 
     // Private constructors
     void initGame();
