@@ -71,7 +71,7 @@ void Game::drawText(const std::string string,
 {
     sf::Font font;
     if (!font.loadFromFile("resources/fonts/arial.ttf")){
-        std::cerr << "Failed to load font" << std::endl;
+        throw textError("Failed to load font in drawText().");
     }
     sf::Text text(string, font, size);
     text.setPosition(position);

@@ -1,11 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Network.hpp>
-#include "object.h"
+#include "constants.h"
+#include "player.h"
 #include <iostream>
 
 #define WINDOW_WIDTH 1200

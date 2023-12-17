@@ -6,12 +6,22 @@ int main()
     Game game;    
 
     // Rendering the window
-    while (game.isWindowOpen())
+    try
+    {
+        while (game.isWindowOpen())
     {
         game.handleEvents(); // Handle events
         game.update(); // Update game
         game.render(); // Render window
     }   
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return EXIT_FAILURE;
+    }
+    
+    
 
-    return 0;
+    return EXIT_SUCCESS;
 }
