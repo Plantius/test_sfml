@@ -55,21 +55,21 @@ void Game::handleEvents()
 
             case sf::Keyboard::Up: case sf::Keyboard::W:
                 newVelocity.x = 0;
-                newVelocity.y = -1*movementSpeed;
+                newVelocity.y = -player->getMovementSpeed();
                 player->setVelocity(newVelocity);
                 break;
             case sf::Keyboard::Down: case sf::Keyboard::S:
                 newVelocity.x = 0;
-                newVelocity.y = movementSpeed;
+                newVelocity.y = player->getMovementSpeed();
                 player->setVelocity(newVelocity);
                 break;
             case sf::Keyboard::Left: case sf::Keyboard::A:
-                newVelocity.x = -1*movementSpeed; 
+                newVelocity.x = -player->getMovementSpeed(); 
                 newVelocity.y = 0;
                 player->setVelocity(newVelocity);
                 break;
             case sf::Keyboard::Right: case sf::Keyboard::D:
-                newVelocity.x = movementSpeed; 
+                newVelocity.x = player->getMovementSpeed(); 
                 newVelocity.y = 0;
                 player->setVelocity(newVelocity);
                 break;
@@ -84,24 +84,41 @@ void Game::handleEvents()
     }
 } // handleEvents
 
+/*
+==================================================================
+*/
+
 void Game::update()
 {
     deltaTime = clock.restart();
+    sf::CircleShape* playerSprite = player->getPlayerSprite();
     
-    player->getPlayerSprite()->move(player->getVelocity().x*deltaTime.asSeconds(), player->getVelocity().y*deltaTime.asSeconds());
+    playerSprite->move(player->getVelocity().x*deltaTime.asSeconds(), 
+                       player->getVelocity().y*deltaTime.asSeconds());
 
     // If player goes beyond bounds, teleport to the opposite side
-    if(player->getPlayerSprite()->getPosition().x < -2*player->getPlayerSprite()->getRadius()){
-        player->getPlayerSprite()->setPosition(WINDOW_WIDTH, player->getPlayerSprite()->getPosition().y);
-    }else if(player->getPlayerSprite()->getPosition().x >= WINDOW_WIDTH + player->getPlayerSprite()->getRadius()){
-        player->getPlayerSprite()->setPosition(-player->getPlayerSprite()->getRadius(), player->getPlayerSprite()->getPosition().y);
-    }else if(player->getPlayerSprite()->getPosition().y < -2*player->getPlayerSprite()->getRadius()){
-        player->getPlayerSprite()->setPosition(player->getPlayerSprite()->getPosition().x, WINDOW_HEIGHT);
-    }else if(player->getPlayerSprite()->getPosition().y >= WINDOW_HEIGHT + player->getPlayerSprite()->getRadius()){
-        player->getPlayerSprite()->setPosition(player->getPlayerSprite()->getPosition().x, -player->getPlayerSprite()->getRadius());
+    sf::Vector2f pos = player->getPosition();
+    const float radius = playerSprite->getRadius();
+    if(pos.x < -2*radius){
+        playerSprite->setPosition(WINDOW_WIDTH, pos.y);
+    }else if(pos.x >= WINDOW_WIDTH + radius){
+        playerSprite->setPosition(-radius, pos.y);
+    }else if(pos.y < -2*radius){
+        playerSprite->setPosition(pos.x, WINDOW_HEIGHT);
+    }else if(pos.y >= WINDOW_HEIGHT + radius){
+        playerSprite->setPosition(pos.x, -radius);
     }
 
 } // update
+
+bool Game::collisionCoin() const
+{
+
+}
+
+/*
+==================================================================
+*/
 
 void Game::render()
 {  

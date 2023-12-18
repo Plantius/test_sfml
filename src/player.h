@@ -9,6 +9,7 @@ class Player
         sf::Vector2f velocity;
 
         float size;
+        float movementSpeed;
 
         sf::CircleShape* playerSprite;
 
@@ -19,11 +20,14 @@ class Player
         // Setters
         void setPosition(const sf::Vector2f pos);
         void setVelocity(const sf::Vector2f v);
+        void setMovementSpeed(const float speed);
+
 
         // Getters
         sf::Vector2f getPosition() const;
         sf::Vector2f getVelocity() const;
         sf::CircleShape* getPlayerSprite() const;
+        float getMovementSpeed() const;
         
 
 };

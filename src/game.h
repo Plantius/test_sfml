@@ -2,6 +2,7 @@
 #define GAME_H
 #include "constants.h"
 #include "player.h"
+#include "object.h"
 #include <iostream>
 
 #define WINDOW_WIDTH 1200
@@ -20,7 +21,10 @@ private:
     sf::Clock clock;
     sf::Time deltaTime;
 
+    // Objects
     Player* player;
+    std::vector<Coin> coinArray;
+
 
     // Private constructors
     void initGame();
@@ -33,6 +37,10 @@ public:
     void update();
     void render();
     void handleEvents();
+
+    // Collision
+    bool collisionCoin() const;
+
 
     // Drawers
     void drawText(const std::string string, 
