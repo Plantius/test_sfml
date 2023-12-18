@@ -9,7 +9,6 @@ Game::~Game()
 {
     delete this->window;
     delete this->player;
-    delete this->playerSprite;
 } // Default Destructor
 
 void Game::initGame() 
@@ -29,8 +28,7 @@ void Game::initGame()
 
     // Player
     player = new Player();
-    playerSprite = new sf::CircleShape(20, 50);
-    playerSprite->setFillColor(sf::Color::Green);
+    player->getPlayerSprite()->setFillColor(sf::Color::Green);
 
 } // Private Constructor
 
@@ -90,17 +88,17 @@ void Game::update()
 {
     deltaTime = clock.restart();
     
-    playerSprite->move(player->getVelocity().x*deltaTime.asSeconds(), player->getVelocity().y*deltaTime.asSeconds());
+    player->getPlayerSprite()->move(player->getVelocity().x*deltaTime.asSeconds(), player->getVelocity().y*deltaTime.asSeconds());
 
     // If player goes beyond bounds, teleport to the opposite side
-    if(playerSprite->getPosition().x < -2*playerSprite->getRadius()){
-        playerSprite->setPosition(WINDOW_WIDTH, playerSprite->getPosition().y);
-    }else if(playerSprite->getPosition().x >= WINDOW_WIDTH + playerSprite->getRadius()){
-        playerSprite->setPosition(-playerSprite->getRadius(), playerSprite->getPosition().y);
-    }else if(playerSprite->getPosition().y < -2*playerSprite->getRadius()){
-        playerSprite->setPosition(playerSprite->getPosition().x, WINDOW_HEIGHT);
-    }else if(playerSprite->getPosition().y >= WINDOW_HEIGHT + playerSprite->getRadius()){
-        playerSprite->setPosition(playerSprite->getPosition().x, -playerSprite->getRadius());
+    if(player->getPlayerSprite()->getPosition().x < -2*player->getPlayerSprite()->getRadius()){
+        player->getPlayerSprite()->setPosition(WINDOW_WIDTH, player->getPlayerSprite()->getPosition().y);
+    }else if(player->getPlayerSprite()->getPosition().x >= WINDOW_WIDTH + player->getPlayerSprite()->getRadius()){
+        player->getPlayerSprite()->setPosition(-player->getPlayerSprite()->getRadius(), player->getPlayerSprite()->getPosition().y);
+    }else if(player->getPlayerSprite()->getPosition().y < -2*player->getPlayerSprite()->getRadius()){
+        player->getPlayerSprite()->setPosition(player->getPlayerSprite()->getPosition().x, WINDOW_HEIGHT);
+    }else if(player->getPlayerSprite()->getPosition().y >= WINDOW_HEIGHT + player->getPlayerSprite()->getRadius()){
+        player->getPlayerSprite()->setPosition(player->getPlayerSprite()->getPosition().x, -player->getPlayerSprite()->getRadius());
     }
 
 } // update
@@ -112,7 +110,7 @@ void Game::render()
     // Display FPS
     drawText(std::to_string(static_cast<int>(1/deltaTime.asSeconds())), 
              sf::Color::Black, 24, {10, 10});
-    window->draw(*playerSprite);
+    window->draw(*player->getPlayerSprite());
 
     window->display();
 } // render

@@ -3,7 +3,14 @@
 Player::Player()
 {
     position = {0, 0};
+    size = 20;
+    playerSprite = new sf::CircleShape(size, 50);
 } // Default Constructor
+
+Player::~Player()
+{
+    delete playerSprite;
+} // Destructor
 
 void Player::setPosition(const sf::Vector2f pos)
 {
@@ -23,4 +30,9 @@ void Player::setVelocity(const sf::Vector2f v)
 sf::Vector2f Player::getVelocity() const
 {
     return this->velocity;
+} // getPosition
+
+sf::CircleShape* Player::getPlayerSprite() const
+{
+    return this->playerSprite;
 } // getPosition
