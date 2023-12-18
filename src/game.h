@@ -21,7 +21,6 @@ private:
     sf::Time deltaTime;
 
     Player* player;
-    sf::CircleShape* playerSprite;
 
     // Private constructors
     void initGame();

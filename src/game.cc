@@ -20,7 +20,7 @@ void Game::initGame()
     event = {};
 
     window = new sf::RenderWindow(windowHandle, windowTitle);
-    // window->setFramerateLimit(60);
+    window->setFramerateLimit(60);
 
     // Time Constructor
     clock = {};
