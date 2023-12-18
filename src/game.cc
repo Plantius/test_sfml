@@ -7,6 +7,11 @@ Game::Game()
 
 Game::~Game()
 {
+    for (size_t i = 0; i < coinArray.size(); i++){
+        delete coinArray[i];
+    }
+    coinArray.clear();
+
     delete this->window;
     delete this->player;
 } // Default Destructor
@@ -91,14 +96,28 @@ void Game::handleEvents()
 void Game::update()
 {
     deltaTime = clock.restart();
+    std::srand(static_cast<int>(1000/deltaTime.asSeconds())); // Pseudo-random numbers
+
     sf::CircleShape* playerSprite = player->getPlayerSprite();
     
     playerSprite->move(player->getVelocity().x*deltaTime.asSeconds(), 
                        player->getVelocity().y*deltaTime.asSeconds());
 
+    updatePlayer();
+    if (coinArray.size() < MAX_COINS){
+        spawnCoin();
+    }
+
+
+} // update
+
+void Game::updatePlayer()
+{
     // If player goes beyond bounds, teleport to the opposite side
-    sf::Vector2f pos = player->getPosition();
+    sf::CircleShape* playerSprite = player->getPlayerSprite();
+    const sf::Vector2f pos = player->getPosition();
     const float radius = playerSprite->getRadius();
+
     if(pos.x < -2*radius){
         playerSprite->setPosition(WINDOW_WIDTH, pos.y);
     }else if(pos.x >= WINDOW_WIDTH + radius){
@@ -108,13 +127,20 @@ void Game::update()
     }else if(pos.y >= WINDOW_HEIGHT + radius){
         playerSprite->setPosition(pos.x, -radius);
     }
+}
 
-} // update
+void Game::spawnCoin()
+{  
+    Coin* coin = new Coin({std::rand() % WINDOW_WIDTH, std::rand() % WINDOW_HEIGHT}, 10);
+    coinArray.push_back(coin);
+    std::cout << coin->getPosition().x << "," << coin->getPosition().y << std::endl;
+} // spawnCoin
 
 bool Game::collisionCoin() const
 {
 
-}
+} // collisionCoin
+
 
 /*
 ==================================================================
@@ -128,7 +154,9 @@ void Game::render()
     drawText(std::to_string(static_cast<int>(1/deltaTime.asSeconds())), 
              sf::Color::Black, 24, {10, 10});
     window->draw(*player->getPlayerSprite());
-
+    for(size_t i = 0; i < coinArray.size(); i++){
+        window->draw(*coinArray[i]->getSprite());
+    }
     window->display();
 } // render
 

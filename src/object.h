@@ -14,6 +14,10 @@ class Coin
         Coin(const sf::Vector2f pos, const float size);
         ~Coin();
 
+        // Getters
+        sf::CircleShape* getSprite() const;
+        sf::Vector2f getPosition() const {return coinSprite->getPosition();};
+
         
 };  
 

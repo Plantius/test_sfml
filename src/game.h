@@ -5,8 +5,7 @@
 #include "object.h"
 #include <iostream>
 
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 800
+
 
 class Game
 {
@@ -23,7 +22,7 @@ private:
 
     // Objects
     Player* player;
-    std::vector<Coin> coinArray;
+    std::vector<Coin*> coinArray;
 
 
     // Private constructors
@@ -38,7 +37,10 @@ public:
     void render();
     void handleEvents();
 
-    // Collision
+    // Updates
+    void updatePlayer();
+
+    void spawnCoin();
     bool collisionCoin() const;
 
 
