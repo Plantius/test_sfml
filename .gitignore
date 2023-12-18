@@ -33,4 +33,4 @@
 
 .vscode
 bin/*
-debug/*
+debug/* 
