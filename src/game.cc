@@ -8,16 +8,30 @@ Game::Game()
 Game::~Game()
 {
     delete this->window;
+    delete this->player;
+    delete this->playerSprite;
 } // Default Destructor
 
 void Game::initGame() 
 {   
+    // Window Constructor
     windowHandle.height = WINDOW_HEIGHT;
     windowHandle.width = WINDOW_WIDTH;
     windowTitle = "Test -- SFML";
+    event = {};
 
     window = new sf::RenderWindow(windowHandle, windowTitle);
     // window->setFramerateLimit(60);
+
+    // Time Constructor
+    clock = {};
+    deltaTime = {};
+
+    // Player
+    player = new Player();
+    playerSprite = new sf::CircleShape(20, 50);
+    playerSprite->setFillColor(sf::Color::Green);
+
 } // Private Constructor
 
 /*
@@ -26,6 +40,7 @@ void Game::initGame()
 
 void Game::handleEvents()
 {
+    sf::Vector2f newVelocity;
     while (window->pollEvent(event))
     {
         switch (event.type)
@@ -34,8 +49,35 @@ void Game::handleEvents()
             window->close();
             break;
         case sf::Event::KeyPressed:
-            if (event.key.code == sf::Keyboard::Escape){
+            switch (event.key.code)
+            {
+            case sf::Keyboard::Escape:
                 window->close();
+                break;
+
+            case sf::Keyboard::Up: case sf::Keyboard::W:
+                newVelocity.x = 0;
+                newVelocity.y = -1*movementSpeed;
+                player->setVelocity(newVelocity);
+                break;
+            case sf::Keyboard::Down: case sf::Keyboard::S:
+                newVelocity.x = 0;
+                newVelocity.y = movementSpeed;
+                player->setVelocity(newVelocity);
+                break;
+            case sf::Keyboard::Left: case sf::Keyboard::A:
+                newVelocity.x = -1*movementSpeed; 
+                newVelocity.y = 0;
+                player->setVelocity(newVelocity);
+                break;
+            case sf::Keyboard::Right: case sf::Keyboard::D:
+                newVelocity.x = movementSpeed; 
+                newVelocity.y = 0;
+                player->setVelocity(newVelocity);
+                break;
+
+            default:
+                break;
             }
             break;
         default:
@@ -47,8 +89,9 @@ void Game::handleEvents()
 void Game::update()
 {
     deltaTime = clock.restart();
-    std::cout << "FPS: " << 1/deltaTime.asSeconds() << std::endl;
-
+    
+    playerSprite->move(player->getVelocity().x*deltaTime.asSeconds(), player->getVelocity().y*deltaTime.asSeconds());
+    // std::cout << "FPS: " << 1/deltaTime.asSeconds() << std::endl;
 
 } // update
 
@@ -59,10 +102,14 @@ void Game::render()
     // Display FPS
     drawText(std::to_string(static_cast<int>(1/deltaTime.asSeconds())), 
              sf::Color::Black, 24, {10, 10});
-
+    window->draw(*playerSprite);
 
     window->display();
 } // render
+
+/*
+==================================================================
+*/
 
 void Game::drawText(const std::string string, 
                   const sf::Color color, 
@@ -71,10 +118,15 @@ void Game::drawText(const std::string string,
 {
     sf::Font font;
     if (!font.loadFromFile("resources/fonts/arial.ttf")){
-        throw textError("Failed to load font in drawText().");
+        throw textError("Failed to load font: \"resources/fonts/arial.ttf\" in drawText().");
     }
     sf::Text text(string, font, size);
     text.setPosition(position);
     text.setFillColor(color);
     window->draw(text);
 } // drawText
+
+/*
+==================================================================
+*/
+

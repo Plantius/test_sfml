@@ -2,10 +2,24 @@
 #define PLAYER_H
 #include "constants.h"
 
-class player
+class Player
 {
+    private:
+        sf::Vector2f position;
+        sf::Vector2f velocity;
+
     public:
-        player();
+        Player();
+        
+        // Setters
+        void setPosition(const sf::Vector2f pos);
+        void setVelocity(const sf::Vector2f v);
+
+        // Getters
+        sf::Vector2f getPosition() const;
+        sf::Vector2f getVelocity() const;
+        
+
 };
 
 

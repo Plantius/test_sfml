@@ -20,6 +20,9 @@ private:
     sf::Clock clock;
     sf::Time deltaTime;
 
+    Player* player;
+    sf::CircleShape* playerSprite;
+
     // Private constructors
     void initGame();
     

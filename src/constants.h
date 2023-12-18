@@ -8,4 +8,6 @@
 #include <iostream>
 #include "error.h"
 
+const float movementSpeed = 200;
+
 #endif
