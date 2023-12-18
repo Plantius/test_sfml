@@ -92,14 +92,15 @@ void Game::update()
     
     playerSprite->move(player->getVelocity().x*deltaTime.asSeconds(), player->getVelocity().y*deltaTime.asSeconds());
 
+    // If player goes beyond bounds, teleport to the opposite side
     if(playerSprite->getPosition().x < -2*playerSprite->getRadius()){
         playerSprite->setPosition(WINDOW_WIDTH, playerSprite->getPosition().y);
-    }else if(playerSprite->getPosition().x >= WINDOW_WIDTH + 2*playerSprite->getRadius()){
-        playerSprite->setPosition(0, playerSprite->getPosition().y);
+    }else if(playerSprite->getPosition().x >= WINDOW_WIDTH + playerSprite->getRadius()){
+        playerSprite->setPosition(-playerSprite->getRadius(), playerSprite->getPosition().y);
     }else if(playerSprite->getPosition().y < -2*playerSprite->getRadius()){
         playerSprite->setPosition(playerSprite->getPosition().x, WINDOW_HEIGHT);
-    }else if(playerSprite->getPosition().y >= WINDOW_HEIGHT + 2*playerSprite->getRadius()){
-        playerSprite->setPosition(playerSprite->getPosition().x, 0);
+    }else if(playerSprite->getPosition().y >= WINDOW_HEIGHT + playerSprite->getRadius()){
+        playerSprite->setPosition(playerSprite->getPosition().x, -playerSprite->getRadius());
     }
 
 } // update
